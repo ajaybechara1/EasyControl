@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.conf import settings
 
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -21,7 +22,8 @@ def GetPreTrainedModel(request):
 	}
 	try:
 		HTTP_HOST = request.META['HTTP_HOST']
-		model_url = "http://" + HTTP_HOST + "/files/trained_models/default/model.json"
+		logger.error("request.META %s", str(settings.MY_PUBLIC_IP), extra={'AppName': 'API'})
+		model_url = "http://" + str(settings.MY_PUBLIC_IP) + "/files/trained_models/default/model.json"
 		response['model_url'] = model_url
 	except Exception as e:
 		response['status'] = 500
@@ -53,7 +55,7 @@ def GetModel(request, token):
 			return Response(response)
 
 		HTTP_HOST = request.META['HTTP_HOST']
-		model_url = "http://" + HTTP_HOST + "/" + model_path
+		model_url = "http://" + settings.MY_PUBLIC_IP + "/" + model_path
 		response['model_url'] = model_url
 	except Exception as e:
 		response['status'] = 500
