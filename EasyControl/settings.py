@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 from pathlib import Path
+import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -37,9 +38,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    
+    'api',
+    'rest_framework',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -50,6 +56,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'EasyControl.urls'
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 TEMPLATES = [
     {
@@ -80,6 +88,17 @@ DATABASES = {
     }
 }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'aicc_db',
+#         'USER': 'ajaybechara1',
+#         'PASSWORD': 'adminadmin',
+#         'HOST': 'database-1.cqjbcxrqdz3v.us-east-2.rds.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
@@ -100,6 +119,65 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Log Conf
+if not os.path.exists('log'):
+    os.makedirs('log')
+
+APP_LOG_FILENAME = os.path.join(BASE_DIR, 'log/app.log')
+
+ERROR_LOG_FILENAME = os.path.join(BASE_DIR, 'log/error.log')
+
+SENSITIVE_LOG_FILENAME = os.path.join(BASE_DIR, 'log/sensitive.log')
+
+LOGFILE_SIZE = 20 * 1024 * 1024
+
+LOGFILE_COUNT = 5
+
+API_LOGFILE = 'api'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'standard': {
+            'format': "[%(asctime)s] %(levelname)s [%(filename)s:%(lineno)s] [%(AppName)s] %(message)s",
+            'datefmt': "%d-%b-%Y %H:%M:%S"
+        }
+    },
+    'handlers': {
+        'applog': {
+            'level': 'INFO',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': APP_LOG_FILENAME,
+            'maxBytes': LOGFILE_SIZE,
+            'backupCount': LOGFILE_COUNT,
+            'formatter': 'standard',
+        },
+        'errorlog': {
+            'level': 'ERROR',
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': ERROR_LOG_FILENAME,
+            'maxBytes': LOGFILE_SIZE,
+            'backupCount': LOGFILE_COUNT,
+            'formatter': 'standard',
+        },
+    },
+    'loggers': {
+        API_LOGFILE: {
+            'handlers': ['applog', 'errorlog'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    }
+}
+
+
+LOGTAILER_HISTORY_LINES = 50
+
+LOGTAILER_LINES = 1000
+
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
@@ -118,3 +196,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+MEDIA_URL = '/files/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'files/')
