@@ -46,6 +46,9 @@ def GetModel(request, token):
 	}
 	try:
 		token_path = TRAINING_DATASET_PATH + token
+
+		gesture_name_list = os.listdir(token_path + "/train_grey")
+
 		storage_model_path = TRAINING_DATASET_PATH + token + "/model/model.json"
 		storage_weight_path = TRAINING_DATASET_PATH + token + "/model/group1-shard1of1.bin"
 
@@ -72,8 +75,11 @@ def GetModel(request, token):
 
 		HTTP_HOST = request.META['HTTP_HOST']
 		model_url = "https://" + settings.MY_PUBLIC_IP + "/" + model_path
-		# model_url = "http://" + "127.0.0.1:8000" + "/" + model_path
+		# model_url = "http://" + "127.0.0.1:8000" + "/" + model_pat
+		
 		response['model_url'] = model_url
+		response['gesture_name_list'] = gesture_name_list
+
 	except Exception as e:
 		response['status'] = 500
 		exc_type, exc_obj, exc_tb = sys.exc_info()

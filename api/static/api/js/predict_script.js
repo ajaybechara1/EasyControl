@@ -35,6 +35,7 @@ new p5(sketch, 'container');
 // MODEL LOADING
 
 var model_ab;
+var gesture_name_list_ab;
 
 async function loadModel(model_url) {
 	var model_value = await tf.loadLayersModel(model_url);
@@ -48,6 +49,7 @@ function get_model_url_and_load(token = "DEFAULT") {
 		status
 	) {
 		var model_url = data["model_url"];
+		gesture_name_list_ab = data['gesture_name_list']
 		loadModel(model_url).then(function (value) {
 			model_ab = value;
 		});
@@ -89,7 +91,9 @@ function predict_gesture(){
 		
 		for(var index=0 ; index<prediction_data_ab.length ; index++){
 			var node = document.createElement("LI");
-			var textnode = document.createTextNode(prediction_data_ab[index]);
+			var li_element_val = gesture_name_list_ab[index];
+			li_element_val = li_element_val + "  -  " +prediction_data_ab[index].toString();
+			var textnode = document.createTextNode(li_element_val);
 			node.appendChild(textnode);
 			document.getElementById("output").appendChild(node);
 		}
