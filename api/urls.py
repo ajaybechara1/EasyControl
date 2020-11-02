@@ -14,5 +14,7 @@ urlpatterns = [
 	path('upload-images-data/', views.UploadImagePage),
 	path('predict-gestures/', views.PredictGestures),
 	path('train-model-with-token/', views.TrainModelWithToken),
+	path('upload-model/', views.UploadModel),
+	path('upload-model-with-token/', views.UploadModelWithToken),
 	path('', views.UploadImagePage),
 ]

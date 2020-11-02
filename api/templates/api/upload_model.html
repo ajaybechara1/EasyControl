@@ -40,21 +40,7 @@
             crossorigin="anonymous"
         ></script>
 
-        <!--  
-          Local JS files   
-        -->
-        <script src="{% static 'api/js/capture_image.js' %}"></script>
-
-        <!--  
-          Local CSS files   
-        -->
-        <link
-            rel="stylesheet"
-            type="text/css"
-            href="{% static 'api/css/upload_page_style.css' %}"
-        />
-
-        <title>Capture Image</title>
+        <title>Upload Model</title>
     </head>
 
     <body>
@@ -65,49 +51,21 @@
 
         <br><hr>
 
-        <input id="train_model_token_name_input" type="text" placeholder="Token" />
-
-        <button id="train_model_with_token_button" 
-                class="btn btn-primary" 
-                onclick='train_model_with_token()'>
-            Train Model
-        </button>
-
-        <br><hr>
-
-        <button id="generate_user_token_button" 
-                class="btn btn-primary" 
-                onclick='generate_user_token()'>
-            Generate Token
-        </button>
-
-        <br><hr>
-
-        <input id="name_of_gesture" type="text" placeholder="Gesture Name" />
-
-        <input id="image_capture_count" type="number" value="100" placeholder="Image Count" />
-
-        <button id="start_capturing_button" 
-                class="btn btn-primary">
-            Start Capturing
-        </button>
-
-        <button id="upload_data_with_token_button" 
-                class="btn btn-primary" 
-                onclick='upload_data_with_token()'>
-            Upload
-        </button>
-
-
-        <br><hr>
-        <div id="container"></div>
+        <input id="token_name_input" type="text" placeholder="Token" />
         
+        <input id="model_input" type="file" placeholder="Token" />
+
+        <input id="weight_input" type="file" placeholder="Token" />
+
+        <button id="upload_model_button" 
+                class="btn btn-primary" 
+                onclick='upload_model()'>
+            Upload Model
+        </button>
+
         <br><hr>
-        <div id="captured_data_content"></div>
-        <!--  
-          Files requires page loaded
-        -->
-        <script type="text/javascript" src="{% static 'api/js/console.js' %}"></script>
+
+        <script type="text/javascript" src="{% static 'api/js/upload_model.js' %}"></script>
 
     </body>
 </html>

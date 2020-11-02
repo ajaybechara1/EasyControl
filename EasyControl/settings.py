@@ -229,4 +229,7 @@ MEDIA_URL = '/files/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files/')
 
-TRAINING_DATASET_PATH = "/media/ajaybechara1/AVANI/SEAS/efs/training_data/"
+if DEBUG:
+    TRAINING_DATASET_PATH = "/media/ajaybechara1/AVANI/SEAS/efs/training_data/"
+else:
+    TRAINING_DATASET_PATH = "/home/ubuntu/efs/training_data/"
