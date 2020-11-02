@@ -43,7 +43,7 @@ async function loadModel(model_url) {
 }
 
 function get_model_url_and_load(token = "DEFAULT") {
-	$.get("http://127.0.0.1:8000/api/get-model/" + token, function (
+	$.get("/api/get-model/" + token, function (
 		data,
 		status
 	) {

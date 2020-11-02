@@ -92,7 +92,7 @@ function upload_data_with_token(){
 	
 	$.ajax({
 		type: "POST",
-		url: "http://127.0.0.1:8000/api/upload-images-with-token/",
+		url: "/api/upload-images-with-token/",
 		headers: {
             "X-CSRFToken": getCookie("csrftoken")
         },
@@ -117,7 +117,7 @@ function generate_user_token(){
 	// console.log(data)
 	$.ajax({
 		type: "POST",
-		url: "http://127.0.0.1:8000/api/create-user-token/",
+		url: "/api/create-user-token/",
 		headers: {
             "X-CSRFToken": getCookie("csrftoken")
         },
@@ -157,7 +157,7 @@ function train_model_with_token(){
 
 	$.ajax({
 		type: "POST",
-		url: "http://127.0.0.1:8000/api/train-model-with-token/",
+		url: "/api/train-model-with-token/",
 		headers: {
             "X-CSRFToken": getCookie("csrftoken")
         },
@@ -225,7 +225,7 @@ async function upload_model(){
 
 	$.ajax({
 		type: "POST",
-		url: "http://127.0.0.1:8000/api/upload-model-with-token/",
+		url: "/api/upload-model-with-token/",
 		headers: {
             "X-CSRFToken": getCookie("csrftoken")
         },
