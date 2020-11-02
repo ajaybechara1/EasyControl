@@ -30,7 +30,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'bb#1qy2tzu6$2y-he_@j+!wyn*0_!ffvffy*bf1-s*gkpu6xt4'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'EasyControl.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if DEBUG:
+if not DEBUG:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
@@ -130,7 +130,7 @@ AUTH_PASSWORD_VALIDATORS = [
 if not os.path.exists('log'):
     os.makedirs('log')
 
-if not DEBUG:
+if DEBUG:
     if not os.path.exists("/home/ubuntu/efs/training_data"):
         os.makedirs("/home/ubuntu/efs/training_data")
 
@@ -229,7 +229,7 @@ MEDIA_URL = '/files/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files/')
 
-if DEBUG:
+if not DEBUG:
     TRAINING_DATASET_PATH = "/media/ajaybechara1/AVANI/SEAS/efs/training_data/"
 else:
     TRAINING_DATASET_PATH = "/home/ubuntu/efs/training_data/"
