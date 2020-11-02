@@ -14,8 +14,11 @@ from pathlib import Path
 import os
 from requests import get
 
-MY_PUBLIC_IP = get('https://api.ipify.org').text
-
+try:
+    MY_PUBLIC_IP = get('https://api.ipify.org').text
+except Exception as e:
+    pass
+    
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -186,7 +189,7 @@ LOGTAILER_LINES = 1000
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Calcutta'
 
 USE_I18N = True
 
@@ -205,3 +208,5 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 MEDIA_URL = '/files/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files/')
+
+TRAINING_DATASET_PATH = "/media/ajaybechara1/AVANI/SEAS/efs/training_data/"

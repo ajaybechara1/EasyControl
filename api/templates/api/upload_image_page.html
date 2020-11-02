@@ -1,0 +1,111 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        
+        <!--  
+          P5 file   
+        -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/p5.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.8.0/addons/p5.dom.min.js"></script>
+        <!--  
+          jQuery  
+        -->
+        <script
+            src="https://code.jquery.com/jquery-3.5.1.min.js"
+            integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+            crossorigin="anonymous"
+        ></script>
+        <!--
+          Bootstrap files 
+        -->
+        <link
+            rel="stylesheet"
+            href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+            integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
+            crossorigin="anonymous"
+        />
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"
+            integrity="sha384-LtrjvnR4Twt/qOuYxE721u19sVFLVSA4hf/rRt6PrZTmiPltdZcI7q7PXQBYTKyf"
+            crossorigin="anonymous"
+        ></script>
+
+        <!--  
+          Local JS files   
+        -->
+        <script src="{% static 'api/js/capture_image.js' %}"></script>
+
+        <!--  
+          Local CSS files   
+        -->
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static 'api/css/upload_page_style.css' %}"
+        />
+
+        <title>Capture Image</title>
+    </head>
+
+    <body>
+
+        <a href="/predict-gestures" class="btn btn-success"> Predict </a>
+
+        <br><hr>
+
+        <input id="train_model_token_name_input" type="text" placeholder="Token" />
+
+        <button id="train_model_with_token_button" 
+                class="btn btn-primary" 
+                onclick='train_model_with_token()'>
+            Train Model
+        </button>
+
+        <br><hr>
+
+        <button id="generate_user_token_button" 
+                class="btn btn-primary" 
+                onclick='generate_user_token()'>
+            Generate Token
+        </button>
+
+        <br><hr>
+
+        <input id="name_of_gesture" type="text" placeholder="Gesture Name" />
+
+        <input id="image_capture_count" type="number" value="100" placeholder="Image Count" />
+
+        <button id="start_capturing_button" 
+                class="btn btn-primary">
+            Start Capturing
+        </button>
+
+        <button id="upload_data_with_token_button" 
+                class="btn btn-primary" 
+                onclick='upload_data_with_token()'>
+            Upload
+        </button>
+
+
+        <br><hr>
+        <div id="container"></div>
+        
+        <br><hr>
+        <div id="captured_data_content"></div>
+        <!--  
+          Files requires page loaded
+        -->
+        <script type="text/javascript" src="{% static 'api/js/console.js' %}"></script>
+
+    </body>
+</html>

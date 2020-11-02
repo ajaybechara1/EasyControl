@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>Display Webcam Stream</title>
+		<script
+			type="text/javascript"
+			src="https://cdnjs.cloudflare.com/ajax/libs/webcamjs/1.0.25/webcam.js"
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		/>
+		<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs/dist/tf.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs-data@2.3.0/dist/tf-data.min.js"></script>
+		<script src="https://requirejs.org/docs/release/2.3.5/minified/require.js"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+		<style>
+			#container {
+				margin: 10px;
+				width: 500px;
+				height: 375px;
+			}
+			#videoElement {
+				width: 500px;
+				height: 375px;
+				background-color: #666;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="row">
+			<div class="column" style="margin: 30px 20px 10px 60px">
+				<video autoplay="true" id="videoElement"></video>
+			</div>
+			<div class="column" style="margin: 30px 60px 10px 60px">
+				<img id="snapShot" src="" width="auto" height="auto" />
+			</div>
+		</div>
+		<!--FOR THE SNAPSHOT-->
+		<input
+			type="button"
+			value="Take a Snap"
+			id="btPic"
+			onclick="takeSnapShot()"
+		/>
+		<input type="button" value="Apply" id="" onclick="make_prediction()" />
+		<p id="output"></p>
+
+		<!--  
+          Local JS files   
+        -->
+		<script src="{% static 'api/js/predict_script.js' %}"></script>
+
+	</body>
+</html>

@@ -8,4 +8,11 @@ urlpatterns = [
 	path('get-file/', views.GetFile),
 	path('get-model-file/', views.GetModelFile),
 	path('get-weight-file/', views.GetWeightFile),	
+
+	path('create-user-token/', views.CreateUserToken),
+	path('upload-images-with-token/', views.UploadImageWithToken),
+	path('upload-images-data/', views.UploadImagePage),
+	path('predict-gestures/', views.PredictGestures),
+	path('train-model-with-token/', views.TrainModelWithToken),
+	path('', views.UploadImagePage),
 ]
