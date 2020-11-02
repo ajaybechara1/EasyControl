@@ -32,6 +32,50 @@ SECRET_KEY = 'bb#1qy2tzu6$2y-he_@j+!wyn*0_!ffvffy*bf1-s*gkpu6xt4'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+if DEBUG:
+    if not os.path.exists("/home/ubuntu/efs/training_data"):
+        os.makedirs("/home/ubuntu/efs/training_data")
+
+    if not os.path.exists("files"):
+        os.makedirs("files")
+
+    if not os.path.exists("files/trained_models"):
+        os.makedirs("files/trained_models")
+
+    if not os.path.exists("files/trained_models/DEFAULT"):
+        os.makedirs("files/trained_models/DEFAULT")
+
+    if not os.path.exists("/home/ubuntu/efs/training_data/DEFAULT"):
+        os.makedirs("/home/ubuntu/efs/training_data/DEFAULT")
+
+    if not os.path.exists("/home/ubuntu/efs/training_data/DEFAULT/model"):
+        os.makedirs("/home/ubuntu/efs/training_data/DEFAULT/model")
+
+    TRAINING_DATASET_PATH = "/home/ubuntu/efs/training_data/"
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'aicc_db',
+            'USER': 'ajaybechara1',
+            'PASSWORD': 'adminadmin',
+            'HOST': 'database-1.cqjbcxrqdz3v.us-east-2.rds.amazonaws.com',
+            'PORT': '5432',
+        }
+    }
+
+else:
+    TRAINING_DATASET_PATH = "/media/ajaybechara1/AVANI/SEAS/efs/training_data/"
+
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
+
+
+
 ALLOWED_HOSTS = ["*"]
 
 
@@ -84,27 +128,27 @@ TEMPLATES = [
 WSGI_APPLICATION = 'EasyControl.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/3.1/ref/settings/#databases
+# # Database
+# # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
-if not DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': 'aicc_db',
-            'USER': 'ajaybechara1',
-            'PASSWORD': 'adminadmin',
-            'HOST': 'database-1.cqjbcxrqdz3v.us-east-2.rds.amazonaws.com',
-            'PORT': '5432',
-        }
-    }
+# if DEBUG:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.sqlite3',
+#             'NAME': BASE_DIR / 'db.sqlite3',
+#         }
+#     }
+# else:
+#     DATABASES = {
+#         'default': {
+#             'ENGINE': 'django.db.backends.postgresql',
+#             'NAME': 'aicc_db',
+#             'USER': 'ajaybechara1',
+#             'PASSWORD': 'adminadmin',
+#             'HOST': 'database-1.cqjbcxrqdz3v.us-east-2.rds.amazonaws.com',
+#             'PORT': '5432',
+#         }
+#     }
 
 
 # Password validation
@@ -129,25 +173,6 @@ AUTH_PASSWORD_VALIDATORS = [
 # Log Conf
 if not os.path.exists('log'):
     os.makedirs('log')
-
-if DEBUG:
-    if not os.path.exists("/home/ubuntu/efs/training_data"):
-        os.makedirs("/home/ubuntu/efs/training_data")
-
-    if not os.path.exists("files"):
-        os.makedirs("files")
-
-    if not os.path.exists("files/trained_models"):
-        os.makedirs("files/trained_models")
-
-    if not os.path.exists("files/trained_models/DEFAULT"):
-        os.makedirs("files/trained_models/DEFAULT")
-
-    if not os.path.exists("/home/ubuntu/efs/training_data/DEFAULT"):
-        os.makedirs("/home/ubuntu/efs/training_data/DEFAULT")
-
-    if not os.path.exists("/home/ubuntu/efs/training_data/DEFAULT/model"):
-        os.makedirs("/home/ubuntu/efs/training_data/DEFAULT/model")
 
 APP_LOG_FILENAME = os.path.join(BASE_DIR, 'log/app.log')
 
@@ -229,7 +254,3 @@ MEDIA_URL = '/files/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'files/')
 
-if not DEBUG:
-    TRAINING_DATASET_PATH = "/media/ajaybechara1/AVANI/SEAS/efs/training_data/"
-else:
-    TRAINING_DATASET_PATH = "/home/ubuntu/efs/training_data/"
