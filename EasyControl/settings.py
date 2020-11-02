@@ -18,6 +18,8 @@ try:
     MY_PUBLIC_IP = get('https://api.ipify.org').text
 except Exception as e:
     pass
+
+MY_PUBLIC_IP = "aicc.computoinfotech.com"
     
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

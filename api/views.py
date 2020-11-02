@@ -71,8 +71,8 @@ def GetModel(request, token):
 			return Response(response)
 
 		HTTP_HOST = request.META['HTTP_HOST']
-		model_url = "http://" + settings.MY_PUBLIC_IP + "/" + model_path
-		model_url = "http://" + "127.0.0.1:8000" + "/" + model_path
+		model_url = "https://" + settings.MY_PUBLIC_IP + "/" + model_path
+		# model_url = "http://" + "127.0.0.1:8000" + "/" + model_path
 		response['model_url'] = model_url
 	except Exception as e:
 		response['status'] = 500
