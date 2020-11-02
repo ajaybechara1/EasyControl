@@ -182,12 +182,3 @@ function train_model_with_token(){
 	});	
 
 }
-
-navigator.permissions.query({name:'camera'}).then(function(result) {
-	if (result.state == 'granted') {
-	} else if (result.state == 'prompt') {
-	} else if (result.state == 'denied') {
-	}
-	result.onchange = function() {
-	};
-});
