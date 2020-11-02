@@ -79,14 +79,11 @@ elt_start_capturing_button.addEventListener('click', async event => {
 });
 
 
-function upload_data_with_token(){
-	if(generated_user_token == undefined){
-		alert("Please generate token first")
-		return;
-	}
+function upload_data_with_token_of_gesture(send_image_dictionary, index){
 	var data = {
 		'user_token': generated_user_token,
-		"captured_image_dictionary": JSON.stringify(captured_image_dictionary)
+		"captured_image_dictionary": JSON.stringify(send_image_dictionary),
+		"index": index
 	}
 	data = JSON.stringify(data);
 	
@@ -109,6 +106,70 @@ function upload_data_with_token(){
 		}
 	});
 }
+
+
+
+function upload_data_with_token(){
+	if(generated_user_token == undefined){
+		alert("Please generate token first")
+		return;
+	}
+	
+	for(gesture_name in captured_image_dictionary){
+		gesture_data_list = captured_image_dictionary[gesture_name]
+		
+		var temp_gesture_dict = {}
+		temp_gesture_dict[gesture_name] = []
+
+		console.log(gesture_data_list)
+		var count = 0;
+
+		for(var index=0 ; index<gesture_data_list.length ; index++){
+			
+			temp_gesture_dict[gesture_name].push(gesture_data_list[index])
+
+			if(index%3 == 0){
+				upload_data_with_token_of_gesture(temp_gesture_dict, count);
+				count += 3;
+				temp_gesture_dict[gesture_name] = [];
+			}
+		}
+		upload_data_with_token_of_gesture(temp_gesture_dict, count);
+	}
+
+}
+
+
+// function upload_data_with_token(){
+// 	if(generated_user_token == undefined){
+// 		alert("Please generate token first")
+// 		return;
+// 	}
+// 	var data = {
+// 		'user_token': generated_user_token,
+// 		"captured_image_dictionary": JSON.stringify(captured_image_dictionary)
+// 	}
+// 	data = JSON.stringify(data);
+	
+// 	$.ajax({
+// 		type: "POST",
+// 		url: "/api/upload-images-with-token/",
+// 		headers: {
+//             "X-CSRFToken": getCookie("csrftoken")
+//         },
+// 		data: {
+// 			"data": data
+// 		},
+// 		success: function(response){
+// 			elt_upload_data_with_token_button.classList.remove("btn-primary");
+// 			elt_upload_data_with_token_button.classList.add("btn-success");
+// 		},
+// 		error: function(error){
+// 			elt_upload_data_with_token_button.classList.remove("btn-primary");
+// 			elt_upload_data_with_token_button.classList.add("btn-danger");
+// 		}
+// 	});
+// }
 
 function generate_user_token(){	
 	var data = {}

@@ -75,7 +75,7 @@ def GetModel(request, token):
 
 		HTTP_HOST = request.META['HTTP_HOST']
 		model_url = "https://" + settings.MY_PUBLIC_IP + "/" + model_path
-		# model_url = "http://" + "127.0.0.1:8000" + "/" + model_pat
+		# model_url = "http://" + "127.0.0.1:8000" + "/" + model_path
 		
 		response['model_url'] = model_url
 		response['gesture_name_list'] = gesture_name_list
@@ -85,19 +85,6 @@ def GetModel(request, token):
 		exc_type, exc_obj, exc_tb = sys.exc_info()
 		logger.error("GetModel %s at line %s", str(exc_tb.tb_lineno), str(e), extra={'AppName': 'API'})
 	return Response(response)
-
-
-def GetImage(request):
-	return FileResponse(open('files/images/aa.JPG', 'rb'))
-
-def GetFile(request):
-	return FileResponse(open('files/ABCDEG/model.json', 'rb'))
-
-def GetModelFile(request):
-	return FileResponse(open('files/ABCDEG/model.json', 'rb'))
-
-def GetWeightFile(request):
-	return FileResponse(open('files/ABCDEG/group1-shard1of1.bin', 'rb'))
 
 @api_view(['POST'])
 def CreateUserToken(request):
@@ -122,6 +109,7 @@ def UploadImageWithToken(request):
 	try:
 		data = json.loads(request.data['data'])
 		user_token = data['user_token']
+		index_start = int(data['index'])
 		captured_image_dictionary = json.loads(data['captured_image_dictionary'])
 
 		token_specific_path = TRAINING_DATASET_PATH + user_token
@@ -142,7 +130,7 @@ def UploadImageWithToken(request):
 			if not os.path.exists(gesture_specific_path):
 			    os.makedirs(gesture_specific_path)
 
-			index = 0
+			index = index_start
 			for image_data in image_list:
 				image_specific_path = gesture_specific_path + '/' + str(index) + ".png"
 				with open(image_specific_path, "wb") as file_handler:
