@@ -20,6 +20,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 TRAINING_DATASET_PATH = "/media/ajaybechara1/AVANI/SEAS/efs/training_data/"
+TRAINING_DATASET_PATH = "/home/ubuntu/efs/training_data/"
 
 @api_view(['GET'])
 def GetPreTrainedModel(request):

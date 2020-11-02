@@ -1,4 +1,5 @@
 TRAINING_DATASET_PATH = "/media/ajaybechara1/AVANI/SEAS/efs/training_data/"
+TRAINING_DATASET_PATH = "/home/ubuntu/efs/training_data/"
 
 def train_user_model(user_token):
     # Importing the Keras libraries and packages
