@@ -15,6 +15,7 @@ from os import path
 import base64
 import json
 import shutil
+import threading
 
 import logging
 logger = logging.getLogger(__name__)
@@ -22,29 +23,12 @@ logger = logging.getLogger(__name__)
 TRAINING_DATASET_PATH = settings.TRAINING_DATASET_PATH
 
 @api_view(['GET'])
-def GetPreTrainedModel(request):
-	response = {
-		'status' : 200
-	}
-	try:
-		HTTP_HOST = request.META['HTTP_HOST']
-		logger.error("request.META %s", str(settings.MY_PUBLIC_IP), extra={'AppName': 'API'})
-		model_url = "http://" + str(settings.MY_PUBLIC_IP) + "/files/trained_models/default/model.json"
-		response['model_url'] = model_url
-	except Exception as e:
-		response['status'] = 500
-		exc_type, exc_obj, exc_tb = sys.exc_info()
-		logger.error("GetPreTrainedModel %s at line %s", str(exc_tb.tb_lineno), str(e), extra={'AppName': 'API'})
-
-	return Response(response)
-
-
-@api_view(['GET'])
 def GetModel(request, token):
 	response = {
 		'status' : 200
 	}
 	try:
+		logger.info("GetModel token : %s", str(token), extra={'AppName': 'API'})
 		token_path = TRAINING_DATASET_PATH + token
 
 		gesture_name_list = os.listdir(token_path + "/train_grey")
@@ -94,6 +78,7 @@ def CreateUserToken(request):
 	try:
 		user_object = UserObject.objects.create()
 		response['user_token'] = user_object.user_token
+		logger.info("CreateUserToken token generated : %s", str(user_object.user_token), extra={'AppName': 'API'})
 	except Exception as e:
 		response['status'] = 500
 		exc_type, exc_obj, exc_tb = sys.exc_info()
@@ -109,20 +94,28 @@ def UploadImageWithToken(request):
 	try:
 		data = json.loads(request.data['data'])
 		user_token = data['user_token']
+
+		logger.info("UploadImageWithToken token : %s", str(user_token), extra={'AppName': 'API'})
+
 		index_start = int(data['index'])
 		captured_image_dictionary = json.loads(data['captured_image_dictionary'])
 
 		token_specific_path = TRAINING_DATASET_PATH + user_token
-		if not os.path.exists(token_specific_path):
-		    os.makedirs(token_specific_path)
 
-		train_data_specific_path = token_specific_path + "/train"
-		if not os.path.exists(train_data_specific_path):
-		    os.makedirs(train_data_specific_path)
+		try:
+			if not os.path.exists(token_specific_path):
+			    os.makedirs(token_specific_path)
 
-		test_data_specific_path = token_specific_path + "/test"
-		if not os.path.exists(test_data_specific_path):
-		    os.makedirs(test_data_specific_path)
+			train_data_specific_path = token_specific_path + "/train"
+			if not os.path.exists(train_data_specific_path):
+			    os.makedirs(train_data_specific_path)
+
+			test_data_specific_path = token_specific_path + "/test"
+			if not os.path.exists(test_data_specific_path):
+			    os.makedirs(test_data_specific_path)
+		except Exception as e:
+			exc_type, exc_obj, exc_tb = sys.exc_info()
+			logger.error("UploadImageWithToken path create %s at line %s", str(e), str(exc_tb.tb_lineno), extra={'AppName': 'API'})
 
 		for gesture_name, image_list in captured_image_dictionary.items():
 
@@ -160,7 +153,12 @@ def TrainModelWithToken(request):
 		data = request.data
 		user_token = data['user_token']
 		
-		train_model_with_token(user_token)
+		logger.info("TrainModelWithToken token : %s", str(user_token), extra={'AppName': 'API'})
+
+		# train_model_with_token(user_token)
+		thread_process = threading.Thread(target=train_model_with_token, args=(user_token,))
+		# thread_process.daemon = True
+		thread_process.start()
 
 	except Exception as e:
 		response['status'] = 500
@@ -182,11 +180,11 @@ def UploadModelWithToken(request):
 	try:
 		data = json.loads(request.data['data'])
 
-		print(data.keys())
-
 		user_token = data['user_token']
 		model_file_data = data['model_file']
 		weight_file_data = data['weight_file']
+
+		logger.info("UploadModelWithToken token : %s", str(user_token), extra={'AppName': 'API'})
 
 		token_specific_path = TRAINING_DATASET_PATH + user_token
 
@@ -201,7 +199,6 @@ def UploadModelWithToken(request):
 		model_file_path = model_dir_path + '/' + "model.json"
 		weight_file_path = model_dir_path + '/' + "group1-shard1of1.bin"
 
-		print('\n\n\n\n', model_file_path, weight_file_path)
 		with open(model_file_path, "wb") as file_handler:
 			file_handler.write(base64.b64decode(model_file_data))
 

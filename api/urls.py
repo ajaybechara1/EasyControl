@@ -2,7 +2,6 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-	path('get-pretrained-model/', views.GetPreTrainedModel),
 	path('get-model/<str:token>/', views.GetModel),
 	path('create-user-token/', views.CreateUserToken),
 	path('upload-images-with-token/', views.UploadImageWithToken),
