@@ -31,7 +31,14 @@ def GetModel(request, token):
 		logger.info("GetModel token : %s", str(token), extra={'AppName': 'API'})
 		token_path = TRAINING_DATASET_PATH + token
 
-		gesture_name_list = os.listdir(token_path + "/train_grey")
+		try:
+			gesture_name_list = os.listdir(token_path + "/train_grey")
+
+			if token == "DEFAULT":
+				gesture_name_list = ["2", "3", "4", "5", "DOWN", "L", "OK", "UP"]
+		except Exception as e:
+			gesture_name_list = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15"]
+			pass
 
 		storage_model_path = TRAINING_DATASET_PATH + token + "/model/model.json"
 		storage_weight_path = TRAINING_DATASET_PATH + token + "/model/group1-shard1of1.bin"

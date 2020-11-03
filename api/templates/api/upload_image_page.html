@@ -68,9 +68,19 @@
 
     <body>
 
-        <a href="/" class="btn btn-secondary"> Train New </a>
-        <a href="/predict-gestures" class="btn btn-success"> Predict </a>
-        <a href="/upload-model" class="btn btn-dark"> Upload Model </a>
+        <div>
+            <a href="/" class="btn btn-dark" style="width: 33%"> Train New </a>
+            <a href="/predict-gestures" class="btn btn-light" style="width: 33%"> Predict </a>
+            <a href="/upload-model" class="btn btn-light" style="width: 33%"> Upload Model </a>
+        </div>
+        <br><hr>
+
+
+        <button id="generate_user_token_button" 
+                class="btn btn-primary" 
+                onclick='generate_user_token()'>
+            Generate Token
+        </button>
 
         <br><hr>
 
@@ -82,13 +92,7 @@
             Train Model
         </button>
 
-        <br><hr>
-
-        <button id="generate_user_token_button" 
-                class="btn btn-primary" 
-                onclick='generate_user_token()'>
-            Generate Token
-        </button>
+        <span id="train_message" style="display: none" > </span>
 
         <br><hr>
 
@@ -107,6 +111,7 @@
             Upload
         </button>
 
+        <span id="upload_message" style="display: none" > </span>
 
         <br><hr>
         <div id="container"></div>

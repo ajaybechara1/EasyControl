@@ -63,23 +63,35 @@
 
     <body>
 
-        <a href="/" class="btn btn-secondary"> Train New </a>
-        <a href="/predict-gestures" class="btn btn-success"> Predict </a>
-        <a href="/upload-model" class="btn btn-dark"> Upload Model </a>
+        <div>
+            <a href="/" class="btn btn-light" style="width: 33%"> Train New </a>
+            <a href="/predict-gestures" class="btn btn-light" style="width: 33%"> Predict </a>
+            <a href="/upload-model" class="btn btn-dark" style="width: 33%"> Upload Model </a>
+        </div>
 
         <br><hr>
 
         <input id="token_name_input" type="text" placeholder="Token" />
         
+        <div></div>
+        <br>
+
+        <span> Model File :  </span>
         <input id="model_input" type="file" placeholder="Token" />
 
+        <span> Weight File :  </span>
         <input id="weight_input" type="file" placeholder="Token" />
+
+        <div></div>
+        <br>
 
         <button id="upload_model_button" 
                 class="btn btn-primary" 
                 onclick='upload_model()'>
             Upload Model
         </button>
+    
+        <span id="upload_message" style="display: none" > </span>
 
         <br><hr>
 

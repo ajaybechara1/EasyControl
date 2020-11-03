@@ -7,7 +7,7 @@ const elt_upload_data_with_token_button = document.getElementById('upload_data_w
 var generated_user_token = undefined;
 
 var captured_image_dictionary = {};
-var image_capture_count = 100;
+var image_capture_count = 20;
 var gesture_number = 1;
 
 window.onload = function(){
@@ -78,8 +78,13 @@ elt_start_capturing_button.addEventListener('click', async event => {
 
 });
 
+var upload_count = 0;
+var upload_count_target = 0;
+var upload_check_interval;
 
 function upload_data_with_token_of_gesture(send_image_dictionary, index){
+	upload_count_target+=1;
+
 	var data = {
 		'user_token': generated_user_token,
 		"captured_image_dictionary": JSON.stringify(send_image_dictionary),
@@ -97,17 +102,13 @@ function upload_data_with_token_of_gesture(send_image_dictionary, index){
 			"data": data
 		},
 		success: function(response){
-			elt_upload_data_with_token_button.classList.remove("btn-primary");
-			elt_upload_data_with_token_button.classList.add("btn-success");
+			upload_count += 1;
 		},
 		error: function(error){
-			elt_upload_data_with_token_button.classList.remove("btn-primary");
-			elt_upload_data_with_token_button.classList.add("btn-danger");
+			upload_count += 1;
 		}
 	});
 }
-
-
 
 function upload_data_with_token(){
 	if(generated_user_token == undefined){
@@ -121,7 +122,6 @@ function upload_data_with_token(){
 		var temp_gesture_dict = {}
 		temp_gesture_dict[gesture_name] = []
 
-		console.log(gesture_data_list)
 		var count = 0;
 
 		for(var index=0 ; index<gesture_data_list.length ; index++){
@@ -137,6 +137,17 @@ function upload_data_with_token(){
 		upload_data_with_token_of_gesture(temp_gesture_dict, count);
 	}
 
+	upload_check_interval = setInterval(function(){
+		console.log("Upload Checking");
+		if(upload_count == upload_count_target){
+			elt_upload_data_with_token_button.classList.remove("btn-primary");
+			elt_upload_data_with_token_button.classList.add("btn-success");
+			clearInterval(upload_check_interval)
+			document.getElementById("upload_message").innerHTML = "Images Uploaded";
+			document.getElementById("upload_message").style.display = "";
+			document.getElementById("upload_message").style.color = "green";
+		}
+	}, 2000)
 }
 
 
@@ -229,6 +240,9 @@ function train_model_with_token(){
 			if(response['status'] == 200){
 				document.getElementById("train_model_with_token_button").classList.remove("btn-primary");
 				document.getElementById("train_model_with_token_button").classList.add("btn-success");
+				document.getElementById("train_message").innerHTML = "Training started";
+				document.getElementById("train_message").style.display = "";
+				document.getElementById("train_message").style.color = "green";
 			}else{
 				console.error(response)
 				document.getElementById("train_model_with_token_button").classList.remove("btn-primary");

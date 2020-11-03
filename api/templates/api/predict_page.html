@@ -70,9 +70,11 @@
 
     <body>
 
-       <a href="/" class="btn btn-secondary"> Train New </a>
-       <a href="/predict-gestures" class="btn btn-success"> Predict </a>
-       <a href="/upload-model" class="btn btn-dark"> Upload Model </a>
+       <div>
+           <a href="/" class="btn btn-light" style="width: 33%"> Train New </a>
+           <a href="/predict-gestures" class="btn btn-dark" style="width: 33%"> Predict </a>
+           <a href="/upload-model" class="btn btn-light" style="width: 33%"> Upload Model </a>
+       </div>
 
        <br><hr>
 
@@ -85,24 +87,27 @@
             Load New Model
         </button>
 
+        <span id="model_load_message" style="display: none; color:green;" > </span>
+
         <hr/>
 
-        <button id="take_snap_button" 
+       <!--  <button id="take_snap_button" 
                 class="btn btn-primary"
                 onclick='take_instant_snap()'
                 >
             Take Snap
         </button>
-
+ -->
         <button id="predict_gesture_botton" 
                 class="btn btn-primary" 
-                onclick='predict_gesture()'>
-            Predict Gesture
+                onclick='start_predict()'>
+            Start
         </button>
 
         <br/>
+        <div></div>
 
-        <ul id="output"></ul>
+        <ul id="output" style="margin-top: 10px;"></ul>
 
         <hr/>
         

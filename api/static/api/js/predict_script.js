@@ -37,9 +37,38 @@ new p5(sketch, 'container');
 var model_ab;
 var gesture_name_list_ab;
 
+var user_token_name = "DEFAULT"
+
+var flag_new_model  = 0;
+
+var message = "Loaded Model ( token : DEFAULT )"
+
 async function loadModel(model_url) {
+
 	var model_value = await tf.loadLayersModel(model_url);
 	console.log("model loaded");
+
+	if(flag_new_model){
+		document.getElementById("load_new_model").classList.remove("btn-primary");
+		document.getElementById("load_new_model").classList.add("btn-success");
+
+		setTimeout(function(){
+			document.getElementById("load_new_model").classList.remove("btn-success");
+			document.getElementById("load_new_model").classList.add("btn-primary");		
+		}, 10000)
+	}
+	flag_new_model = 1;
+
+	message = "Leaded Model : " + user_token_name 
+
+	document.getElementById(
+		"model_load_message"
+	).innerHTML = message;
+
+	document.getElementById(
+		"model_load_message"
+	).style.display = ""
+
 	return model_value;
 }
 
@@ -60,6 +89,11 @@ function get_model_url_and_load(token = "DEFAULT") {
 //////////////////////////////////////////////////////////////////////////////////
 // PREDICT GESTURE CODE
 
+var total_precticted_count = 0;
+var predict_start_time;
+var total_precticted_time = 0; // second
+var fps = 0;
+
 function take_instant_snap(){
 	var instant_image = capture_image();
 	document.getElementById("snaped_image").src = instant_image;
@@ -79,6 +113,7 @@ async function get_image_ready() {
 }
 
 function predict_gesture(){
+
 	get_image_ready().then(function (image) {
 		image_captured = image;
 		
@@ -89,6 +124,12 @@ function predict_gesture(){
 		prediction_obj_ab = model_ab.predict(image_captured);
 		prediction_data_ab = prediction_obj_ab.dataSync();
 		
+		total_precticted_count += 1;
+		var end_time = new Date();
+		total_precticted_time = (end_time.getTime() - predict_start_time.getTime()) / 1000;
+		fps = total_precticted_count / total_precticted_time;
+		console.log(fps);
+
 		for(var index=0 ; index<prediction_data_ab.length ; index++){
 			var node = document.createElement("LI");
 			var li_element_val = gesture_name_list_ab[index];
@@ -97,7 +138,18 @@ function predict_gesture(){
 			node.appendChild(textnode);
 			document.getElementById("output").appendChild(node);
 		}
+		predict_continous();
 	});
+}
+
+function predict_continous(){
+	take_instant_snap();
+	setTimeout(predict_gesture, 500);
+}
+
+function start_predict(){
+	predict_start_time = new Date();
+	predict_continous();
 }
 
 function load_new_model(){
@@ -108,19 +160,9 @@ function load_new_model(){
 		return;
 	}
 
+	user_token_name = user_token;
+
 	get_model_url_and_load(user_token);
-
-	document.getElementById("load_new_model").classList.remove("btn-primary");
-	document.getElementById("load_new_model").classList.add("btn-success");
-
-	document.getElementById(
-		"output"
-	).innerHTML = "New model loaded";
-
-	setTimeout(function(){
-		document.getElementById("load_new_model").classList.remove("btn-success");
-		document.getElementById("load_new_model").classList.add("btn-primary");		
-	}, 5000)
 }
 
 get_model_url_and_load("DEFAULT");
